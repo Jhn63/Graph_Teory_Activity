@@ -247,7 +247,41 @@ int is_clique(graph copy, v_list list) {
 }
 
 int is_max_clique(graph copy, v_list list) {
-    return 0; //I didn't know how to implement
+    v_list *reincidence_list = new_vlist();
+    
+    vertex *current = list.head;
+    while (current) {
+        v_list *nh = open_neighborhood(copy, current->id);
+        vertex *aux1 = nh->head;
+        while (aux1) {
+            
+            int is_fine = 1; // verificando se aux1 já é um vertice do clique
+            for (vertex *aux2 = list.head; aux2 ; aux2 = aux2->next ) {
+                if (aux1->id == aux2->id) {
+                    is_fine = 0;
+                    break;
+                }
+            }
+            if (is_fine) {
+                add_as_collection_vlist(reincidence_list, aux1->id); // o vertice não faz parte do clique e pode ser adicionado
+            }
+
+            aux1 = aux1->next;
+        }
+        free(nh);
+        current = current->next;
+    }
+    
+    //Se um vertice for reincidente em até o tamanho do clique, então
+    //esse vertice contem arestas capazes de aumentar o clique, logo não é maximal
+    for (vertex *aux = reincidence_list->head; aux ; aux = aux->next ) {
+        if (aux->reincidence == list.size) {
+            free(reincidence_list);
+            return 0;
+        }
+    }
+    free(reincidence_list);
+    return 1;
 }
 
 int is_independent(graph copy, v_list list) {

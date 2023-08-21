@@ -8,6 +8,7 @@ typedef struct v_list {
 
 typedef struct vertex {
     int id;
+    int reincidence; // only used in is_maximal function
     struct vertex *next;
 } vertex;
 

@@ -53,7 +53,7 @@ int is_clique(graph copy, v_list list); // to be a clique every elements need be
 
 int is_max_clique(graph copy, v_list list);
 
-int is_independent(graph copy, v_list list);
+int is_independent(graph copy, v_list list); // check if the elements are not in the neighborhood of each other 
 
 graph *complement(graph copy);
 

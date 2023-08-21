@@ -6,7 +6,11 @@
 ** Which means the representation is always an integer before that shown in the graphic form.*/
 
 int main() {
-    FILE *file = fopen("test.txt", "r");
+    char file_path[100];
+    puts("Entre o nome do arquivo com a estensao: ");
+    gets(file_path);
+
+    FILE *file = fopen(file_path, "r");
     if (!file) {
         printf("Erro ao abrir arquivo\n");
         exit(0);
@@ -283,7 +287,22 @@ int main() {
                 break;
             }
             case 18: {
-                puts("funcao nao esta implementada");
+                int count = 1;
+
+                int id = 0;
+                v_list *ver = new_vlist();
+                puts("Entre o id dos vertices:");
+                puts("-1 para parar\n");
+                do {
+                    printf("vertice %d: ", count);
+                    scanf("%d", &id);
+                    count++;
+                } while (add_vertex(ver, id));
+                printf("\n");
+
+                is_max_clique(*g, *ver) ? puts("A sequencia eh um clique maximal") :
+                                          puts("A sequencia nao eh um clique maximal");
+                destroy_vlist(ver);
                 break;
             }
             case 19: {

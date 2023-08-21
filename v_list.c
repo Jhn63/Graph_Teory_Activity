@@ -35,6 +35,7 @@ vertex *new_vertex(int id) {
     if (v) {
         v->id = id;
         v->next = NULL;
+        v->reincidence = 1;
     }
     return v;
 }
@@ -74,6 +75,7 @@ int add_as_collection_vlist(v_list *list, int id) {
         while (aux) {
 
             if (aux->id == item->id) {
+                aux->reincidence++;
                 free(item); return 0;
             }
             current = aux;
