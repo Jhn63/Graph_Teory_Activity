@@ -5,23 +5,18 @@
 /*WARNING! The vertices are enumerated starting from 0 to the amount of vertices minus 1.
 ** Which means the representation is always an integer before that shown in the graphic form.*/
 
-int main() {
-    char file_path[100];
-    puts("Entre o nome do arquivo com a estensao: ");
-    gets(file_path);
-
+short** read_file(char *file_path, int *N) {
     FILE *file = fopen(file_path, "r");
     if (!file) {
         printf("Erro ao abrir arquivo\n");
         exit(0);
     }
-    int N = 0;
-    fscanf(file, "%d", &N); //reading first line
+    fscanf(file, "%d", N); //reading first line
 
     short **matrix;
-    matrix = (short**) malloc(N * sizeof(short*));
-    for (int i = 0; i < N; i++) {
-        matrix[i] = (short*) malloc(N * sizeof(short));
+    matrix = (short**) malloc((*N) * sizeof(short*));
+    for (int i = 0; i < (*N); i++) {
+        matrix[i] = (short*) malloc((*N) * sizeof(short));
     }
 
     int i = 0, j = 0;
@@ -31,7 +26,7 @@ int main() {
         if (data == '1') {
             matrix[i][j] = 1;
 
-            j = (j+1) % N;
+            j = (j+1) % (*N);
             if (j == 0) {
                 i++;
             }
@@ -39,7 +34,7 @@ int main() {
         if (data == '0') {
             matrix[i][j] = 0;
 
-            j = (j+1) % N;
+            j = (j+1) % (*N);
             if (j == 0) {
                 i++;
             }
@@ -48,8 +43,20 @@ int main() {
         data = getc(file);
     }
     fclose(file);
-    graph *g = new_graph(N,matrix);
 
+    return matrix;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Uso: %s <caminho do arquivo>\n", argv[0]);
+        return -1;
+    }
+
+    int N;
+    short **matrix = read_file(argv[1], &N); 
+    graph *g = new_graph(N,matrix);
+   
     char op = 0;
     while (op >= 0) {
         puts("\n----------------------------MENU----------------------------");
